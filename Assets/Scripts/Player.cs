@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public float currentHappiness;
     public float hourToDecrease;
     public float hourQuantity;
+    public float minutesQuantity;
     public float totalTime;
 
     // System clock and happiness
@@ -50,23 +51,21 @@ public class Player : MonoBehaviour
         Debug.Log("Diferencia en float: " + difference);
 
 
-
         // Initializing happiness
 
         currentHappiness = PlayerPrefs.GetFloat("HappinessValue", maxHappiness); // Loads happiness
-        happinessBar.SetMaxHappiness(maxHappiness);
+        happinessBar.SetMaxHappiness(maxHappiness); // Send to UI
+
         hourToDecrease = 0.02777777777f;
         hourQuantity = 1.00f; // cambiar a 12 horas despues en produccion
         totalTime = hourToDecrease / hourQuantity;
-        currentHappiness -= 1.66666666667f * difference;
 
-        // tempCurrentHappiness = totalTime;
-        // tempCurrentHappiness = Time.deltaTime * difference;
-        Debug.Log("VALOR DE FELICIDAD: " + 1.66666666667f * difference);
-        Debug.Log("VALOR DE FELICIDAD: " + 0.13888888888f * difference);
+        minutesQuantity = hourQuantity * 60f;
+        happinessDuringSleep = (maxHappiness / minutesQuantity) * difference;
+        Debug.Log("VALOR DE FELICIDAD DURING SLEEP: " + happinessDuringSleep);
         
-
-        // currentHappiness -= tempCurrentHappiness;
+        // Substract happiness on sleep to actual happiness
+        currentHappiness -= happinessDuringSleep;
     }
 
     void Update()
@@ -77,7 +76,7 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Debug.Log("Sacar 10");
-            HappinessDecay(10f);
+            SubstractHappiness(20f);
         }
         
         if (Input.GetKeyDown(KeyCode.A))
@@ -89,13 +88,18 @@ public class Player : MonoBehaviour
         if (currentHappiness >= 0)
         {
 
-            currentHappiness -= Time.deltaTime * (totalTime * 60); // 6 horas * 60 lo hace 1 minuto (cambiarlo a horas despues)
+            currentHappiness -= Time.deltaTime * (totalTime * 30); // 6 horas * 60 lo hace 1 minuto (cambiarlo a horas despues)
             HappinessDecay(currentHappiness);
         }
 
         if (currentHappiness >= maxHappiness)
         {
             currentHappiness = maxHappiness;
+        }
+
+        if (currentHappiness <= 0)
+        {
+            currentHappiness = 0;
         }
     }
 
@@ -107,6 +111,11 @@ public class Player : MonoBehaviour
     public void AddHappiness(float happiness)
     {
         currentHappiness += happiness;
+    }
+
+    public void SubstractHappiness(float happiness)
+    {
+        currentHappiness -= happiness;
     }
 
     public void OnApplicationQuit()
