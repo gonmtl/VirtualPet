@@ -15,7 +15,7 @@ public class Happiness_Bar : MonoBehaviour
         
     }
 
-    public void SetMaxHappiness(int happiness)
+    public void SetMaxHappiness(float happiness)
     {
         slider.maxValue = happiness;
         slider.value = happiness;
@@ -23,7 +23,7 @@ public class Happiness_Bar : MonoBehaviour
         fill.color = gradient.Evaluate(1f);
     }
     
-    public void SetHappiness(int happiness)
+    public void UpdateHappiness(float happiness)
     {
         // if (slider.value != happiness)
         // { 

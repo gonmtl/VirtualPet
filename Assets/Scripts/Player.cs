@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public int maxHappiness = 100;
-    public int currentHappiness;
-
+    public float maxHappiness = 100;
+    public float currentHappiness;
+    public float happinessDecreaseRate;
     [SerializeField]
     public Happiness_Bar happinessBar;
 
@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
 
         currentHappiness = maxHappiness;
         happinessBar.SetMaxHappiness(maxHappiness);
+        happinessDecreaseRate = 5.0f;
     }
 
     void Update()
@@ -30,12 +31,17 @@ public class Player : MonoBehaviour
             Debug.Log("Sacar 10");
             TakeHappiness(10);
         }
+
+        if (currentHappiness >= 0)
+        {
+            currentHappiness -= Time.deltaTime * happinessDecreaseRate;
+            TakeHappiness(currentHappiness);
+        }
     }
 
-    public void TakeHappiness(int happiness)
+    public void TakeHappiness(float happiness)
     {
-        currentHappiness -= happiness;
-        happinessBar.SetHappiness(currentHappiness);
+        happinessBar.UpdateHappiness(currentHappiness);
     }
     
 
