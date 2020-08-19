@@ -17,7 +17,7 @@ public class Happiness_Bar : MonoBehaviour
 
     public void SetMaxHappiness(float happiness)
     {
-        slider.maxValue = happiness;
+        slider.maxValue = 100;
         slider.value = happiness;
 
         fill.color = gradient.Evaluate(1f);
