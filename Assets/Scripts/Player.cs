@@ -1,28 +1,72 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+
 
 public class Player : MonoBehaviour
 {
+
+    // Handles
+    [SerializeField]
+    public Happiness_Bar happinessBar;
+    
+
+    // Happiness Variables
     public float maxHappiness = 100;
     public float currentHappiness;
-    // public float happinessDecreaseRate;
     public float hourToDecrease;
     public float hourQuantity;
     public float totalTime;
 
-    [SerializeField]
-    public Happiness_Bar happinessBar;
+    // System clock and happiness
+    public DateTime currentDate;
+    public DateTime oldDate;
+    public float difference;
+    public float happinessDuringSleep;
+    public float tempCurrentHappiness;
+
+
 
     void Start()
     {
-        currentHappiness = PlayerPrefs.GetFloat("HappinessValue", maxHappiness);
+
+        // Getting date difference from PlayerPrefs
+
+        currentDate = System.DateTime.Now;
+        long temp = Convert.ToInt64(PlayerPrefs.GetString("sysTimeString"));
+        
+        DateTime oldDate = DateTime.FromBinary(temp);
+        Debug.Log("Old time: " + oldDate);
+
+        if (oldDate == null)
+        {
+            oldDate = System.DateTime.Now;
+        }
+
+        TimeSpan getDifference = currentDate.Subtract(oldDate);
+        Debug.Log("Diferencia: " + getDifference.TotalSeconds);
+        difference = (float)getDifference.TotalSeconds;
+        Debug.Log("Diferencia en float: " + difference);
+
+
+
+        // Initializing happiness
+
+        currentHappiness = PlayerPrefs.GetFloat("HappinessValue", maxHappiness); // Loads happiness
         happinessBar.SetMaxHappiness(maxHappiness);
-        // happinessDecreaseRate = 0.00463f;
-        // hourToDecrease = 100/3600;
         hourToDecrease = 0.02777777777f;
         hourQuantity = 1.00f; // cambiar a 12 horas despues en produccion
         totalTime = hourToDecrease / hourQuantity;
+        currentHappiness -= 1.66666666667f * difference;
+
+        // tempCurrentHappiness = totalTime;
+        // tempCurrentHappiness = Time.deltaTime * difference;
+        Debug.Log("VALOR DE FELICIDAD: " + 1.66666666667f * difference);
+        Debug.Log("VALOR DE FELICIDAD: " + 0.13888888888f * difference);
+        
+
+        // currentHappiness -= tempCurrentHappiness;
     }
 
     void Update()
@@ -44,8 +88,14 @@ public class Player : MonoBehaviour
 
         if (currentHappiness >= 0)
         {
-            currentHappiness -= Time.deltaTime * (totalTime * 1); // 6 horas * 60 lo hace 1 minuto (cambiarlo a horas despues)
+
+            currentHappiness -= Time.deltaTime * (totalTime * 60); // 6 horas * 60 lo hace 1 minuto (cambiarlo a horas despues)
             HappinessDecay(currentHappiness);
+        }
+
+        if (currentHappiness >= maxHappiness)
+        {
+            currentHappiness = maxHappiness;
         }
     }
 
@@ -58,6 +108,12 @@ public class Player : MonoBehaviour
     {
         currentHappiness += happiness;
     }
-    
+
+    public void OnApplicationQuit()
+    {
+        PlayerPrefs.SetString("sysTimeString", System.DateTime.Now.ToBinary().ToString());
+        Debug.Log("Guardando esto al cerrar: " + System.DateTime.Now);
+    }
+
 
 }
