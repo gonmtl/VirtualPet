@@ -2860,7 +2860,10 @@ public class LeanTween : MonoBehaviour {
         }
     }
 
-
+    internal static object alphaCanvas(RectTransform rectTransform, float v1, float v2)
+    {
+        throw new NotImplementedException();
+    }
 } // End LeanTween class
 
 public class LTUtility {

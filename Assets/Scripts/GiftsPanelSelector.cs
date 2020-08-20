@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
-public class ModalMoveEase : MonoBehaviour
+public class GiftsPanelSelector : MonoBehaviour
 {
     public bool isOpen = false;
 
