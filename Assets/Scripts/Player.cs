@@ -13,11 +13,11 @@ public class Player : MonoBehaviour
     
 
     // Happiness Variables
-    public float maxHappiness = 100;
+    public float maxHappiness = 100.0f;
     public float currentHappiness;
     public float hourToDecrease;
     public float hourQuantity;
-    public float minutesQuantity;
+    public float secondsQuantity;
     public float totalTime;
 
     // System clock and happiness
@@ -56,12 +56,14 @@ public class Player : MonoBehaviour
         currentHappiness = PlayerPrefs.GetFloat("HappinessValue", maxHappiness); // Loads happiness
         happinessBar.SetMaxHappiness(maxHappiness); // Send to UI
 
+        // Initializing decay time
+
         hourToDecrease = 0.02777777777f;
         hourQuantity = 1.00f; // cambiar a 12 horas despues en produccion
         totalTime = hourToDecrease / hourQuantity;
 
-        minutesQuantity = hourQuantity * 60f;
-        happinessDuringSleep = (maxHappiness / minutesQuantity) * difference;
+        secondsQuantity = hourQuantity * 3600f;
+        happinessDuringSleep = (maxHappiness / secondsQuantity) * difference;
         Debug.Log("VALOR DE FELICIDAD DURING SLEEP: " + happinessDuringSleep);
         
         // Substract happiness on sleep to actual happiness
@@ -70,8 +72,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
-        PlayerPrefs.SetFloat("HappinessValue", currentHappiness);
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -87,9 +87,8 @@ public class Player : MonoBehaviour
 
         if (currentHappiness >= 0)
         {
-
-            currentHappiness -= Time.deltaTime * (totalTime * 30); // 6 horas * 60 lo hace 1 minuto (cambiarlo a horas despues)
-            HappinessDecay(currentHappiness);
+            currentHappiness -= Time.deltaTime * totalTime; // 6 horas * 60 lo hace 1 minuto (cambiarlo a horas despues)
+            UpdateHappiness(currentHappiness);
         }
 
         if (currentHappiness >= maxHappiness)
@@ -97,13 +96,13 @@ public class Player : MonoBehaviour
             currentHappiness = maxHappiness;
         }
 
-        if (currentHappiness <= 0)
+        if (currentHappiness < 0)
         {
             currentHappiness = 0;
         }
     }
 
-    public void HappinessDecay(float happiness)
+    public void UpdateHappiness(float happiness)
     {
         happinessBar.UpdateHappiness(currentHappiness);
     }
@@ -120,9 +119,10 @@ public class Player : MonoBehaviour
 
     public void OnApplicationQuit()
     {
+        PlayerPrefs.SetFloat("HappinessValue", currentHappiness);
         PlayerPrefs.SetString("sysTimeString", System.DateTime.Now.ToBinary().ToString());
         Debug.Log("Guardando esto al cerrar: " + System.DateTime.Now);
+        PlayerPrefs.Save();
     }
-
 
 }
