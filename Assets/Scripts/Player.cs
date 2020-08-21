@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 
@@ -10,7 +11,11 @@ public class Player : MonoBehaviour
     // Handles
     [SerializeField]
     public Happiness_Bar happinessBar;
-    
+    [SerializeField]
+    public SakuraCounter sakuraCounter;
+    [SerializeField]
+    public SakuraCounter goldenSakuraCounter;
+
 
     // Happiness Variables
     public float maxHappiness = 100.0f;
@@ -19,6 +24,12 @@ public class Player : MonoBehaviour
     public float hourQuantity;
     public float secondsQuantity;
     public float totalTime;
+
+    // Sakura Variables
+    public int sakuraAmount;
+
+    // Golden Sakura Variables
+    public int goldenSakuraAmount;
 
     // System clock and happiness
     public DateTime currentDate;
@@ -65,6 +76,7 @@ public class Player : MonoBehaviour
         secondsQuantity = hourQuantity * 3600f;
         happinessDuringSleep = (maxHappiness / secondsQuantity) * difference;
         Debug.Log("VALOR DE FELICIDAD DURING SLEEP: " + happinessDuringSleep);
+
         
         // Substract happiness on sleep to actual happiness
         currentHappiness -= happinessDuringSleep;
@@ -100,6 +112,9 @@ public class Player : MonoBehaviour
         {
             currentHappiness = 0;
         }
+
+        updateSakuraCounter(sakuraAmount);
+        updateGoldenSakuraCounter(goldenSakuraAmount);
     }
 
     public void UpdateHappiness(float happiness)
@@ -115,6 +130,16 @@ public class Player : MonoBehaviour
     public void SubstractHappiness(float happiness)
     {
         currentHappiness -= happiness;
+    }
+
+    public void updateSakuraCounter(int sakura)
+    {
+        sakuraCounter.UpdateSakuraCounter(sakura.ToString());
+    }
+
+    public void updateGoldenSakuraCounter(int sakura)
+    {
+        sakuraCounter.UpdateGoldenSakuraCounter(sakura.ToString());
     }
 
     public void OnApplicationQuit()

@@ -514,8 +514,9 @@ GameObject:
   - component: {fileID: 140032315}
   - component: {fileID: 140032317}
   - component: {fileID: 140032316}
+  - component: {fileID: 140032318}
   m_Layer: 5
-  m_Name: Text
+  m_Name: SakuraText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -581,6 +582,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 140032314}
   m_CullTransparentMesh: 0
+--- !u!114 &140032318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 140032314}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d0d14b92a36abe468761f8f67600374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SakuraText: {fileID: 140032316}
+  GoldenSakuraText: {fileID: 1602489735}
 --- !u!1 &145231982
 GameObject:
   m_ObjectHideFlags: 0
@@ -3620,8 +3635,9 @@ GameObject:
   - component: {fileID: 1602489734}
   - component: {fileID: 1602489736}
   - component: {fileID: 1602489735}
+  - component: {fileID: 1602489737}
   m_Layer: 5
-  m_Name: Text
+  m_Name: GoldenSakuraText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3687,6 +3703,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1602489733}
   m_CullTransparentMesh: 0
+--- !u!114 &1602489737
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1602489733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d0d14b92a36abe468761f8f67600374, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SakuraText: {fileID: 140032316}
+  GoldenSakuraText: {fileID: 1602489735}
 --- !u!1 &1610802986
 GameObject:
   m_ObjectHideFlags: 0
@@ -3717,12 +3747,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   happinessBar: {fileID: 2143931830}
+  sakuraCounter: {fileID: 140032318}
+  goldenSakuraCounter: {fileID: 1602489737}
   maxHappiness: 100
   currentHappiness: 0
   hourToDecrease: 0
   hourQuantity: 0
   secondsQuantity: 0
   totalTime: 0
+  sakuraAmount: 0
+  goldenSakuraAmount: 0
   difference: 0
   happinessDuringSleep: 0
   tempCurrentHappiness: 0
