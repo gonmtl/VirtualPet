@@ -49,17 +49,20 @@ public class Player : MonoBehaviour
         long temp = Convert.ToInt64(PlayerPrefs.GetString("sysTimeString"));
         
         DateTime oldDate = DateTime.FromBinary(temp);
-        Debug.Log("Old time: " + oldDate);
 
         if (oldDate == null)
         {
             oldDate = System.DateTime.Now;
         }
 
-        TimeSpan getDifference = currentDate.Subtract(oldDate);
-        Debug.Log("Diferencia: " + getDifference.TotalSeconds);
+        TimeSpan getDifference = currentDate.Subtract(oldDate);  
         difference = (float)getDifference.TotalSeconds;
-        Debug.Log("Diferencia en float: " + difference);
+        
+
+        // Getting Sakura Amount from PlayerPrefs
+
+        sakuraAmount = PlayerPrefs.GetInt("SakuraAmount", 0);
+        goldenSakuraAmount = PlayerPrefs.GetInt("GoldenSakuraAmount", 0);
 
 
         // Initializing happiness
@@ -75,7 +78,7 @@ public class Player : MonoBehaviour
 
         secondsQuantity = hourQuantity * 3600f;
         happinessDuringSleep = (maxHappiness / secondsQuantity) * difference;
-        Debug.Log("VALOR DE FELICIDAD DURING SLEEP: " + happinessDuringSleep);
+        
 
         
         // Substract happiness on sleep to actual happiness
@@ -142,11 +145,52 @@ public class Player : MonoBehaviour
         sakuraCounter.UpdateGoldenSakuraCounter(sakura.ToString());
     }
 
+    public void AddSakura(int sakura)
+    {
+        sakuraAmount += sakura;
+    }
+
+    public void SubstractSakura(int sakura)
+    {
+
+        if (sakuraAmount <= 0)
+        {
+            sakuraAmount = 0;
+            sakura = 0;
+        }
+
+        sakuraAmount -= sakura;
+    }
+
+    public void AddGoldenSakura(int sakura)
+    {
+        goldenSakuraAmount += sakura;
+    }
+
+    public void SubstractGoldenSakura(int sakura)
+    {
+        if (goldenSakuraAmount <= 0)
+        {
+            goldenSakuraAmount = 0;
+            sakura = 0;
+        }
+
+        goldenSakuraAmount -= sakura;
+
+        
+    }
+
     public void OnApplicationQuit()
     {
+        // SAVE DATETIME
         PlayerPrefs.SetFloat("HappinessValue", currentHappiness);
         PlayerPrefs.SetString("sysTimeString", System.DateTime.Now.ToBinary().ToString());
         Debug.Log("Guardando esto al cerrar: " + System.DateTime.Now);
+
+        //SAVE SAKURA AMOUNT
+        PlayerPrefs.SetInt("SakuraAmount", sakuraAmount);
+        PlayerPrefs.SetInt("GoldenSakuraAmount", goldenSakuraAmount);
+
         PlayerPrefs.Save();
     }
 
