@@ -1,4 +1,5 @@
 ﻿using Boo.Lang;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,9 +8,13 @@ using UnityEngine.UI;
 
 public class GiftsPanelItems : MonoBehaviour
 {
+
+    [SerializeField]
+    public Player player;
     public Transform giftsContainer;
     public Transform giftsTemplate;
     public Transform buttonSelect;
+    public IGiftBuy giftBuy;
 
 
     private void Awake()
@@ -17,13 +22,12 @@ public class GiftsPanelItems : MonoBehaviour
         giftsContainer = transform.Find("container");
         giftsTemplate = giftsContainer.Find("GiftsTemplate");
         giftsTemplate.gameObject.SetActive(false);
+        
     }
 
 
     private void Start()
     {
-
-        Debug.Log("Entro a start");
 
         CreateItemButton
             (
@@ -88,15 +92,37 @@ public class GiftsPanelItems : MonoBehaviour
 
         buttonSelect.GetComponent<Button>().onClick.AddListener(() =>
         {
-            TryBuyItem(itemType);
+            int cost = Item.GetCost(itemType);
+            int happiness = Item.GetHappinessValue(itemType);
+            TryBuyItem(cost, happiness);
         });
         
     } 
 
-    public void TryBuyItem(Item.ItemType itemType)
+    public void TryBuyItem(int cost, int happiness)
     {
-        Debug.Log("Button works");
+        Debug.Log(cost);
+        if (player.sakuraAmount >= cost)
+        {
+            player.SubstractSakura(Convert.ToInt32(cost));
+            player.AddHappiness(Convert.ToInt32(happiness));
+        }
+        else
+        {
+            Debug.Log("Sakura insuficiente");
+        }
     }
 
+    /* public void Show(IGiftBuy giftBuy)
+    {
+        this.giftBuy = giftBuy;
+        gameObject.SetActive(true);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
+    }
+    */
 }
 

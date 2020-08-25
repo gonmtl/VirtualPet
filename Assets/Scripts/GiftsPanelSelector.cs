@@ -20,9 +20,11 @@ public class GiftsPanelSelector : MonoBehaviour
 
     public void moveModalIn()
     {
+
         // LeanTween.moveY(gameObject, 400f, 0.6f).setEaseOutSine();
         gameObject.SetActive(true);
         isOpen = true;
+
     }
     public void moveModalOut()
     {

@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
     public SakuraCounter sakuraCounter;
     [SerializeField]
     public SakuraCounter goldenSakuraCounter;
-
+    [SerializeField]
+    public GiftsPanelItems giftsPanel1;
 
     // Happiness Variables
     public float maxHappiness = 100.0f;
@@ -78,8 +79,6 @@ public class Player : MonoBehaviour
 
         secondsQuantity = hourQuantity * 3600f;
         happinessDuringSleep = (maxHappiness / secondsQuantity) * difference;
-        
-
         
         // Substract happiness on sleep to actual happiness
         currentHappiness -= happinessDuringSleep;
@@ -176,10 +175,14 @@ public class Player : MonoBehaviour
         }
 
         goldenSakuraAmount -= sakura;
-
         
     }
 
+    /* public void BoughtGift(Item.ItemType itemType)
+    {
+        giftsPanel1.giftBuy.BoughtGift(itemType);
+    }
+    */
     public void OnApplicationQuit()
     {
         // SAVE DATETIME
