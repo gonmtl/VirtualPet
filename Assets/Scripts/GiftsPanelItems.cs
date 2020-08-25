@@ -1,5 +1,4 @@
-﻿using Boo.Lang;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,6 +10,9 @@ public class GiftsPanelItems : MonoBehaviour
 
     [SerializeField]
     public Player player;
+    [SerializeField]
+    public WarningModals insufficientSakuraModal;
+
     public Transform giftsContainer;
     public Transform giftsTemplate;
     public Transform buttonSelect;
@@ -109,6 +111,7 @@ public class GiftsPanelItems : MonoBehaviour
         }
         else
         {
+            insufficientSakuraModal.gameObject.SetActive(true);
             Debug.Log("Sakura insuficiente");
         }
     }

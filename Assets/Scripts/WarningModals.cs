@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class WarningModals : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public bool isOpen = false;
+
+    public void moveModal()
     {
-        
+        if (isOpen == false)
+        {
+            moveModalIn();
+        }
+        else
+        {
+            moveModalOut();
+        }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void moveModalIn()
     {
-        
+        // LeanTween.moveY(gameObject, 400f, 0.6f).setEaseOutSine();
+        gameObject.SetActive(true);
+        isOpen = true;
+    }
+    public void moveModalOut()
+    {
+        // LeanTween.moveY(gameObject, -400f, 0.3f).setEaseInSine();
+        gameObject.SetActive(false);
+        isOpen = false;
     }
 }
